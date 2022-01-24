@@ -32,12 +32,6 @@ export default function LogIn(props: {
           Sign up
         </button>
       </Link>
-
-      <SignUpModal
-        allUsers={props.allUsers}
-        setAllUsers={props.setAllUsers}
-        setUser={props.setUser}
-      />
     </div>
   );
 }
