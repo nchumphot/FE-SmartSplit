@@ -5,6 +5,7 @@ import { IUser } from "../interfaces/IUser";
 import { calculateBalanceForAll } from "../utils/calculateBalanceforAll";
 import { friendFilter } from "../utils/friendFilter";
 import { getNonFriendList } from "../utils/getNonFriendList";
+import { AddFriendModal } from "./AddFriendModal";
 import { FriendCard } from "./FriendCard";
 
 export function FriendList(props: {
@@ -57,7 +58,15 @@ export function FriendList(props: {
     return (
       <div>
         <h3>Friends</h3>
-        <button className="btn btn-success">Add friends</button>
+        <button
+          type="button"
+          className="btn btn-success"
+          data-toggle="modal"
+          data-target="#addFriendModal"
+        >
+          Add friends
+        </button>
+        <AddFriendModal user={props.user} />
         {/* Filter dropdown */}
         <label htmlFor="filter-dropdown">Filter:</label>
         <select
