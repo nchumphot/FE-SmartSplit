@@ -41,7 +41,7 @@ export function HomePage(props: {
         <PageHeader user={props.user} setUser={props.setUser} />
         <h2>Welcome back, {props.user.name}!</h2>
         <SmartSplitSummary {...{ summary }} user={props.user} />
-        <FriendList {...{ summary }} />
+        <FriendList {...{ summary, setSummary }} user={props.user} />
       </>
     );
   }
