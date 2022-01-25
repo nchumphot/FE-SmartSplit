@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { IFriendSummary } from "../interfaces/IFriendSummary";
 import { ISummary } from "../interfaces/ISummary";
 import { IUser } from "../interfaces/IUser";
@@ -24,7 +25,10 @@ export function FriendCard(props: {
       >
         <div className="row">
           <div className="col-10">
-            <h4>{props.friend.name}</h4>
+            <Link to={`/friends/${props.friend.id * 199 + 13}`}>
+              <h4>{props.friend.name}</h4>
+            </Link>
+
             {props.isFriend === false && (
               <button
                 className="btn btn-success"
