@@ -28,7 +28,10 @@ function App(): JSX.Element {
             path="/signup"
             element={<SignUpPage {...{ setUser, setAllUsers }} />}
           />
-          <Route path="/friends/:id" element={<IndividualFriend />} />
+          <Route
+            path="/friends/:id"
+            element={<IndividualFriend {...{ user, setUser }} />}
+          />
           <Route path="/expenses/:id" element={<IndividualExpense />} />
           <Route path="/expenses/add" element={<AddExpense />} />
         </Routes>
