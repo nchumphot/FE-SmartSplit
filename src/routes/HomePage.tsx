@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { FriendList } from "../components/FriendList";
 import LogIn from "../components/LogIn";
 import { PageHeader } from "../components/PageHeader";
 import { SmartSplitSummary } from "../components/SmartSplitSummary";
@@ -40,6 +41,7 @@ export function HomePage(props: {
         <PageHeader user={props.user} setUser={props.setUser} />
         <h2>Welcome back, {props.user.name}!</h2>
         <SmartSplitSummary {...{ summary }} user={props.user} />
+        <FriendList {...{ summary }} />
       </>
     );
   }
