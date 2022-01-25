@@ -1,40 +1,59 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IFriendSummary } from "../interfaces/IFriendSummary";
 import { ISummary } from "../interfaces/ISummary";
+import { IUser } from "../interfaces/IUser";
+import { calculateBalanceForAll } from "../utils/calculateBalanceforAll";
 import { friendFilter } from "../utils/friendFilter";
+import { getNonFriendList } from "../utils/getNonFriendList";
 import { FriendCard } from "./FriendCard";
 
 export function FriendList(props: {
   summary: ISummary | undefined;
+  setSummary: React.Dispatch<React.SetStateAction<ISummary | undefined>>;
+  user: IUser;
 }): JSX.Element {
   const filterOptions = [
     "All",
-    "Friends with outstanding balance",
-    "Friends you owe",
-    "Friends who owe you",
+    "People with outstanding balance",
+    "People you owe",
+    "People who owe you",
   ];
   const [selectedOption, setSelectionOption] = useState<string>("All");
+  const [friendSummary, setFriendSummary] = useState<IFriendSummary[]>([]);
+  const [nonFriendSummary, setNonFriendSummary] = useState<IFriendSummary[]>(
+    []
+  );
+  useEffect(() => {
+    if (props.summary !== undefined) {
+      // Calculate balance for all friends
+      const friendSummary = calculateBalanceForAll(
+        props.user.id,
+        props.summary?.friends,
+        props.summary
+      );
+      setFriendSummary(friendSummary);
+      // Calculate balance for all non-friends
+      const nonFriends = getNonFriendList(
+        props.user.id,
+        props.summary.friends,
+        props.summary.moneyBorrowed,
+        props.summary.moneyLent
+      );
+      const nonFriendSummary = calculateBalanceForAll(
+        props.user.id,
+        nonFriends,
+        props.summary
+      );
+      setNonFriendSummary(nonFriendSummary);
+    }
+  }, [props.summary, props.user.id]);
+
+  console.log(friendSummary);
+  console.log(nonFriendSummary);
+
   if (props.summary === undefined) {
     return <h3>Loading your friend list...</h3>;
   } else {
-    // Tallying up balance for each friend
-    let friendSummary: IFriendSummary[] = props.summary.friends;
-    for (const friend of friendSummary) {
-      friend.moneyBorrowed = 0;
-      friend.moneyLent = 0;
-      for (const item of props.summary.moneyBorrowed) {
-        if (friend.id === item.lender_id) {
-          friend.moneyBorrowed += parseFloat(item.balance);
-        }
-      }
-      for (const item of props.summary.moneyLent) {
-        if (friend.id === item.borrower_id) {
-          friend.moneyLent += parseFloat(item.balance);
-        }
-      }
-      // Final balance (+) if you owe, (-) if you are owed.
-      friend.balance = friend.moneyBorrowed - friend.moneyLent;
-    }
     return (
       <div>
         <h3>Friends</h3>
@@ -56,8 +75,30 @@ export function FriendList(props: {
         {friendSummary
           .filter((friend) => friendFilter(selectedOption, friend))
           .map((friend) => (
-            <FriendCard friend={friend} />
+            <FriendCard
+              friend={friend}
+              isFriend={true}
+              user={props.user}
+              setSummary={props.setSummary}
+            />
           ))}
+        {nonFriendSummary.filter((friend) =>
+          friendFilter(selectedOption, friend)
+        ).length !== 0 && (
+          <>
+            <h3>Not in your friend list</h3>
+            {nonFriendSummary
+              .filter((friend) => friendFilter(selectedOption, friend))
+              .map((friend) => (
+                <FriendCard
+                  friend={friend}
+                  isFriend={false}
+                  user={props.user}
+                  setSummary={props.setSummary}
+                />
+              ))}
+          </>
+        )}
       </div>
     );
   }
