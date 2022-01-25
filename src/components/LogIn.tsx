@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { IUser } from "../interfaces/IUser";
 import { getUserById } from "../utils/getUserById";
-import { SignUpModal } from "./SignUpModal";
 
 export default function LogIn(props: {
   allUsers: IUser[];
