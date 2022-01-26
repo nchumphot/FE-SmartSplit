@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { FriendList } from "../components/FriendList";
 import LogIn from "../components/LogIn";
 import { PageHeader } from "../components/PageHeader";
@@ -40,6 +41,11 @@ export function HomePage(props: {
       <>
         <PageHeader user={props.user} setUser={props.setUser} />
         <h2>Welcome back, {props.user.name}!</h2>
+        <Link to="/expenses/add">
+          <button type="button" className="btn btn-success">
+            Add expense
+          </button>
+        </Link>
         <SmartSplitSummary {...{ summary }} user={props.user} />
         <FriendList {...{ summary, setSummary }} user={props.user} />
       </>
