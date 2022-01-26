@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { IUser } from "../interfaces/IUser";
 
 export function PageHeader(props: {
@@ -10,13 +11,15 @@ export function PageHeader(props: {
       {props.user !== undefined && (
         <>
           <p>{props.user.name}</p>
-          <button
-            onClick={() => {
-              props.setUser(undefined);
-            }}
-          >
-            Log out
-          </button>
+          <Link to="/">
+            <button
+              onClick={() => {
+                props.setUser(undefined);
+              }}
+            >
+              Log out
+            </button>
+          </Link>
         </>
       )}
     </>
