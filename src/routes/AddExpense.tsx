@@ -32,7 +32,9 @@ export function AddExpense(props: {
   }, [props.user?.id, userInfo]);
   useEffect(() => {
     if (props.user !== undefined) {
-      setDetails({ ...details, lenderId: props.user.id });
+      let softCopy = details;
+      softCopy.lenderId = props.user.id;
+      setDetails(softCopy);
     }
   }, [props.user, details]);
 
