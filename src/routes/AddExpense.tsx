@@ -34,7 +34,7 @@ export function AddExpense(props: {
     if (props.user !== undefined) {
       setDetails({ ...details, lenderId: props.user.id });
     }
-  }, [props.user?.id]);
+  }, [props.user, details]);
 
   console.log("details", details);
   return (
