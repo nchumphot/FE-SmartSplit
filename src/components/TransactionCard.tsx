@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { ITransaction } from "../interfaces/ITransation";
 
 export function TransactionCard(props: {
@@ -9,7 +10,10 @@ export function TransactionCard(props: {
     return (
       <div className="container border border-primary m-2 p-2">
         <h6>{props.transaction.transaction_date}</h6>
-        <h4>{props.transaction.description}</h4>
+        <Link to={`/expenses/${props.transaction.expense_id}`}>
+          <h4>{props.transaction.description}</h4>
+        </Link>
+
         {props.transaction.amount < 0 && (
           <h4>
             You lent <br />£{props.transaction.balance}
