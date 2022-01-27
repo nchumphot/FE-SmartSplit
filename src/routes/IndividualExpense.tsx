@@ -5,6 +5,7 @@ import { IExpense } from "../interfaces/IExpense";
 import { ITransactionShort } from "../interfaces/ITransactionShort";
 import { IUser } from "../interfaces/IUser";
 import { baseUrl } from "../utils/baseUrl";
+import { dateTimeFormatter } from "../utils/dateTimeFormatter";
 import { fetchData } from "../utils/fetchData";
 
 export function IndividualExpense(props: {
@@ -53,7 +54,7 @@ export function IndividualExpense(props: {
           <h2>{`£${totalBalance}`}</h2>
           <p>
             {`Added by ${creatorName} on
-          ${creationDate}`}
+          ${dateTimeFormatter(creationDate)}`}
           </p>
           {notes && <p>{`Notes: ${notes}`}</p>}
           <h5>{`${lenderName} paid £${totalBalance}`}</h5>

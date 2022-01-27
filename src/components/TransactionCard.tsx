@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ITransaction } from "../interfaces/ITransation";
+import { dateTimeFormatter } from "../utils/dateTimeFormatter";
 
 export function TransactionCard(props: {
   transaction: ITransaction;
@@ -9,7 +10,7 @@ export function TransactionCard(props: {
   } else {
     return (
       <div className="container border border-primary m-2 p-2">
-        <h6>{props.transaction.transaction_date}</h6>
+        <h6>{dateTimeFormatter(props.transaction.transaction_date)}</h6>
         <Link to={`/expenses/${props.transaction.expense_id}`}>
           <h4>{props.transaction.description}</h4>
         </Link>
