@@ -1,3 +1,5 @@
+import { validateEmail } from "./validateEmail";
+
 export function validateSignUp(details: {
   name: string;
   email: string;
@@ -8,7 +10,10 @@ export function validateSignUp(details: {
   } else if (details.name.match(/[^a-zA-Z ]/)) {
     alert("Names can only contain uppercase and lowercase letters.");
     return false;
-  } else {
+  } else if (validateEmail(details.email)) {
     return true;
+  } else {
+    alert("Please enter a valid email address.");
+    return false;
   }
 }

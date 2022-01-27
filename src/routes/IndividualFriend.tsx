@@ -49,10 +49,16 @@ export function IndividualFriend(props: {
     return (
       <>
         <PageHeader user={props.user} setUser={props.setUser} />
-        <h2>Your SmartSplit summary with {friendInfo.info[0].name}!</h2>
-        {allTransactions.map((item) => (
-          <TransactionCard transaction={item} />
-        ))}
+        {allTransactions.length === 0 ? (
+          <h2>You have no expenses with {friendInfo.info[0].name}.</h2>
+        ) : (
+          <>
+            <h2>Your SmartSplit summary with {friendInfo.info[0].name}!</h2>
+            {allTransactions.map((item) => (
+              <TransactionCard transaction={item} />
+            ))}
+          </>
+        )}
       </>
     );
   }

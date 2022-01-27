@@ -1,6 +1,6 @@
 import { IUser } from "../interfaces/IUser";
-import { handleSelectFriend } from "../utils/handleSelectFriend";
-import { handleUnselectFriend } from "../utils/handleUnselectFriend";
+import { getUserById } from "../utils/getUserById";
+import { handleDeselectFriend } from "../utils/handleDeselectFriend";
 
 export function FriendDropDown(props: {
   allFriends: IUser[];
@@ -12,17 +12,15 @@ export function FriendDropDown(props: {
       <label htmlFor="friends">Split this with:</label>
       <select
         name="friends"
-        defaultValue={""}
-        // onSelect={(e) => {
-        //   setprops.selectedFriends(
-        //     handleSelectFriend(
-        //       parseInt(e.target.value),
-        //       props.selectedFriends,
-        //       props.allFriends
-        //     )
-        //   );
-        //   console.log(e.target.value);
-        // }}
+        value={""}
+        onChange={(e) => {
+          props.setSelectedFriends((prev) => [
+            ...prev,
+            getUserById(props.allFriends, parseInt(e.target.value)),
+          ]);
+          console.log(e.target.value);
+          console.log("props.selectedFriends", props.selectedFriends);
+        }}
       >
         <option value="" disabled>
           Select friend(s)
@@ -33,40 +31,29 @@ export function FriendDropDown(props: {
               !props.selectedFriends.some((person) => item.id === person.id)
           )
           .map((item) => (
-            <option
-              key={item.id}
-              value={item.id}
-              onClick={() => {
-                props.setSelectedFriends(
-                  handleSelectFriend(
-                    item.id,
-                    props.selectedFriends,
-                    props.allFriends
-                  )
-                );
-                console.log("selected", item.id);
-              }}
-            >
+            <option key={item.id} value={item.id}>
               {item.name}
             </option>
           ))}
       </select>
-      {props.selectedFriends.length === 0 ? (
+      {/* {props.selectedFriends.length === 0 ? (
         <p>Please select friend(s) to split this expense with.</p>
       ) : (
-        <>
-          {props.selectedFriends.map((friend) => (
-            <button
-              key={friend.id}
-              onClick={() =>
-                handleUnselectFriend(friend.id, props.selectedFriends)
-              }
-            >
-              {friend.name}
-            </button>
-          ))}
-        </>
-      )}
+        <> */}
+      {props.selectedFriends.map((friend) => (
+        <button
+          key={friend.id}
+          onClick={() =>
+            props.setSelectedFriends(
+              handleDeselectFriend(friend.id, props.selectedFriends)
+            )
+          }
+        >
+          {friend.name}
+        </button>
+      ))}
+      {/* </>
+      )} */}
     </div>
   );
 }

@@ -11,6 +11,7 @@ export async function handleAddStranger(
   const res = await fetch(baseUrl + `/users/${friendId}`);
   const jsonBody = await res.json();
   const emailToAdd = jsonBody.data.info[0].email;
-  axios.post(baseUrl + `/friends/${userId}`, { email: emailToAdd });
-  fetchData(baseUrl + `/users/${userId}`, setSummary);
+  axios
+    .post(baseUrl + `/friends/${userId}`, { email: emailToAdd })
+    .then(() => fetchData(baseUrl + `/users/${userId}`, setSummary));
 }

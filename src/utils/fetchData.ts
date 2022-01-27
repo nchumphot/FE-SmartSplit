@@ -2,6 +2,8 @@ import { IUser } from "../interfaces/IUser";
 import { ISummary } from "../interfaces/ISummary";
 import { IFriend } from "../interfaces/IFriend";
 import { IGetUser } from "../interfaces/IGetUser";
+import { IExpense } from "../interfaces/IExpense";
+import { ITransactionShort } from "../interfaces/ITransactionShort";
 
 export function fetchData(
   url: string,
@@ -10,6 +12,15 @@ export function fetchData(
     | React.Dispatch<React.SetStateAction<ISummary | undefined>>
     | React.Dispatch<React.SetStateAction<IFriend | undefined>>
     | React.Dispatch<React.SetStateAction<IGetUser | undefined>>
+    | React.Dispatch<
+        React.SetStateAction<
+          | {
+              expense: IExpense[];
+              transactions: ITransactionShort[];
+            }
+          | undefined
+        >
+      >
 ): void {
   fetch(url)
     .then((res) => res.json())

@@ -22,6 +22,7 @@ export function FriendCard(props: {
         className={`container m-2 p-2 border ${
           props.isFriend ? "border border-success" : "border border-warning"
         }`}
+        key={props.friend.id}
       >
         <div className="row">
           <div className="col-10">

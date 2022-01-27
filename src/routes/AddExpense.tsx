@@ -18,7 +18,8 @@ export function AddExpense(props: {
   const [details, setDetails] = useState<IExpenseForm>({
     description: "",
     amount: 0,
-    option: "",
+    lenderId: 0,
+    option: "Split equally",
     date: "",
     notes: "",
   });
@@ -29,8 +30,13 @@ export function AddExpense(props: {
       fetchData(baseUrl + `/users/${props.user?.id}`, setUserInfo);
     }
   }, [props.user?.id, userInfo]);
+  useEffect(() => {
+    if (props.user !== undefined) {
+      setDetails({ ...details, lenderId: props.user.id });
+    }
+  }, [props.user?.id]);
 
-  console.log(selectedFriends.length);
+  console.log("details", details);
   return (
     <div>
       <PageHeader user={props.user} setUser={props.setUser} />
@@ -38,7 +44,10 @@ export function AddExpense(props: {
       <FriendDropDown
         {...{ allFriends, selectedFriends, setSelectedFriends }}
       />
-      <AddExpenseForm {...{ details, setDetails }} />
+      <AddExpenseForm
+        {...{ details, setDetails, selectedFriends }}
+        user={props.user}
+      />
     </div>
   );
 }

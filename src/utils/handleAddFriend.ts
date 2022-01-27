@@ -24,7 +24,8 @@ export async function handleAddFriend(
         alert("This user is already in your friend list.");
         return;
       } else {
-        axios.post(baseUrl + `/friends/${userId}`, email);
+        axios.post(baseUrl + `/friends/${userId}`, { email: email });
+        alert("Friend added successfuly.");
         return;
       }
     }
