@@ -46,7 +46,6 @@ export function IndividualExpense(props: {
       const otherTransactions = expenseDetails.transactions.filter(
         (item) => item.borrower_id !== props.user?.id
       );
-      console.log(youOwe);
       return (
         <div>
           <PageHeader user={props.user} setUser={props.setUser} />
