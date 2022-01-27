@@ -1,6 +1,6 @@
 import { IUser } from "../interfaces/IUser";
 
-export function handleUnselectFriend(
+export function handleDeselectFriend(
   friendId: number,
   selection: IUser[]
 ): IUser[] {
