@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PageHeader } from "../components/PageHeader";
+import { SettleUpModal } from "../components/SettleUpModal";
 import { TransactionCard } from "../components/TransactionCard";
 import { IFriend } from "../interfaces/IFriend";
 import { IFriendSummary } from "../interfaces/IFriendSummary";
@@ -71,9 +72,14 @@ export function IndividualFriend(props: {
       <>
         <PageHeader user={props.user} setUser={props.setUser} />
         {allTransactions.length === 0 ? (
+          // if there are no transactions between these people
           <h2>You have no expenses with {friendInfo.info[0].name}.</h2>
+        ) : thisFriendSummary[0].balance !== undefined &&
+          thisFriendSummary[0].balance === 0 ? (
+          // if the balance is zero
+          <h2>You are all settled up with {friendInfo.info[0].name}.</h2>
         ) : (
-          // if there is at least 1 transaction
+          // if the balance is non-zero
           <>
             {thisFriendSummary[0].balance !== undefined &&
               thisFriendSummary[0].balance > 0 && (
@@ -91,13 +97,30 @@ export function IndividualFriend(props: {
                   } owes you £${(-thisFriendSummary[0].balance).toFixed(2)}`}
                 </h3>
               )}
-            {thisFriendSummary[0].balance !== 0 && (
-              <button className="btn btn-warning">Settle up</button>
-            )}
+            {thisFriendSummary[0].balance !== undefined &&
+              thisFriendSummary[0].balance !== 0 && (
+                <>
+                  <button
+                    type="button"
+                    className="btn btn-warning"
+                    data-toggle="modal"
+                    data-target="#settleUpModal"
+                  >
+                    Settle
+                  </button>
+                  <SettleUpModal
+                    user={props.user}
+                    friend={friendInfo.info[0]}
+                    balance={thisFriendSummary[0].balance}
+                  />
+                </>
+              )}
             <h2>Your SmartSplit summary with {friendInfo.info[0].name}!</h2>
-            {allTransactions.map((item) => (
-              <TransactionCard transaction={item} />
-            ))}
+            {allTransactions
+              .filter((item) => item.description !== "isSettleUp=true")
+              .map((item) => (
+                <TransactionCard transaction={item} />
+              ))}
           </>
         )}
       </>
