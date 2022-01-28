@@ -34,10 +34,9 @@ export default function AddExpenseForm(props: {
       setTransactions(transactions);
     }
   }, [props.details, props.user, props.selectedFriends]);
-  console.log(transactions);
   if (props.user !== undefined) {
     return (
-      <form>
+      <form className="p-12">
         <div className="form-group">
           <label htmlFor="description">Description</label>
           <input
@@ -54,14 +53,15 @@ export default function AddExpenseForm(props: {
         </div>
         <div className="form-group">
           <label htmlFor="amount">Amount</label>
+          <>£</>
           <input
             className="form-control"
-            value={`£${props.details.amount.toFixed(2)}`}
+            value={props.details.amount}
             name="amount"
             onChange={(e) =>
               props.setDetails({
                 ...props.details,
-                amount: parseFloat(e.target.value.replace(/£/, "")),
+                amount: parseFloat(e.target.value),
               })
             }
           ></input>

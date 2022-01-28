@@ -49,9 +49,6 @@ export function FriendList(props: {
     }
   }, [props.summary, props.user.id]);
 
-  console.log(friendSummary);
-  console.log(nonFriendSummary);
-
   if (props.summary === undefined) {
     return <h3>Loading your friend list...</h3>;
   } else {

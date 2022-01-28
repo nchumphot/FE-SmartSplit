@@ -15,12 +15,13 @@ export function AddExpense(props: {
   const [userInfo, setUserInfo] = useState<IGetUser | undefined>();
   const [allFriends, setAllFriends] = useState<IUser[]>([]);
   const [selectedFriends, setSelectedFriends] = useState<IUser[]>([]);
+  const today = new Date().toISOString().slice(0, 10);
   const [details, setDetails] = useState<IExpenseForm>({
     description: "",
     amount: 0,
     lenderId: 0,
     option: "Split equally",
-    date: "",
+    date: today,
     notes: "",
   });
   useEffect(() => {
@@ -37,8 +38,6 @@ export function AddExpense(props: {
       setDetails(softCopy);
     }
   }, [props.user, details]);
-
-  console.log("details", details);
   return (
     <div>
       <PageHeader user={props.user} setUser={props.setUser} />

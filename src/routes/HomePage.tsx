@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FriendList } from "../components/FriendList";
 import LogIn from "../components/LogIn";
@@ -6,21 +5,15 @@ import { PageHeader } from "../components/PageHeader";
 import { SmartSplitSummary } from "../components/SmartSplitSummary";
 import { ISummary } from "../interfaces/ISummary";
 import { IUser } from "../interfaces/IUser";
-import { baseUrl } from "../utils/baseUrl";
-import { fetchData } from "../utils/fetchData";
 
 export function HomePage(props: {
   user: IUser | undefined;
   setUser: React.Dispatch<React.SetStateAction<IUser | undefined>>;
   allUsers: IUser[];
   setAllUsers: React.Dispatch<React.SetStateAction<IUser[]>>;
+  summary: ISummary | undefined;
+  setSummary: React.Dispatch<React.SetStateAction<ISummary | undefined>>;
 }): JSX.Element {
-  const [summary, setSummary] = useState<ISummary | undefined>();
-  useEffect(() => {
-    if (props.user?.id !== undefined) {
-      fetchData(baseUrl + `/users/${props.user?.id}`, setSummary);
-    }
-  }, [props.user?.id]);
   if (props.user === undefined) {
     // If no one is logged in
     return (
@@ -36,7 +29,7 @@ export function HomePage(props: {
     );
   } else {
     // If a user is logged in
-    console.log(summary);
+    console.log(props.summary);
     return (
       <>
         <PageHeader user={props.user} setUser={props.setUser} />
@@ -46,8 +39,12 @@ export function HomePage(props: {
             Add expense
           </button>
         </Link>
-        <SmartSplitSummary {...{ summary }} user={props.user} />
-        <FriendList {...{ summary, setSummary }} user={props.user} />
+        <SmartSplitSummary summary={props.summary} user={props.user} />
+        <FriendList
+          summary={props.summary}
+          setSummary={props.setSummary}
+          user={props.user}
+        />
       </>
     );
   }
