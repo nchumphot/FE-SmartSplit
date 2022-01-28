@@ -18,8 +18,6 @@ export function FriendDropDown(props: {
             ...prev,
             getUserById(props.allFriends, parseInt(e.target.value)),
           ]);
-          console.log(e.target.value);
-          console.log("props.selectedFriends", props.selectedFriends);
         }}
       >
         <option value="" disabled>
