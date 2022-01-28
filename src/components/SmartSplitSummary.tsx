@@ -7,7 +7,7 @@ export function SmartSplitSummary(props: {
   user: IUser;
 }): JSX.Element {
   if (props.summary === undefined) {
-    return <h3>Loading your SmartAplit summary...</h3>;
+    return <h3>Loading your SmartSplit summary...</h3>;
   } else {
     const [totalMoneyBorrowed, totalMoneyLent] = calculateSummary(
       props.summary,
