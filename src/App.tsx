@@ -49,7 +49,7 @@ function App(): JSX.Element {
           />
           <Route
             path="/friends/:id"
-            element={<IndividualFriend {...{ user, setUser }} />}
+            element={<IndividualFriend {...{ user, setUser, summary }} />}
           />
           <Route
             path="/expenses/:id"
