@@ -9,20 +9,39 @@ import { IUser } from "./interfaces/IUser";
 import { fetchData } from "./utils/fetchData";
 import { baseUrl } from "./utils/baseUrl";
 import { SignUpPage } from "./routes/SignUpPage";
+import { ISummary } from "./interfaces/ISummary";
 
 function App(): JSX.Element {
   const [user, setUser] = useState<IUser | undefined>();
   const [allUsers, setAllUsers] = useState<IUser[]>([]);
+  const [summary, setSummary] = useState<ISummary | undefined>();
+
   useEffect(() => {
     fetchData(baseUrl + "/users", setAllUsers);
   }, []);
+  useEffect(() => {
+    if (user?.id !== undefined) {
+      fetchData(baseUrl + `/users/${user?.id}`, setSummary);
+    }
+  }, [user?.id]);
   return (
     <div>
       <Router>
         <Routes>
           <Route
             path="/"
-            element={<HomePage {...{ user, setUser, allUsers, setAllUsers }} />}
+            element={
+              <HomePage
+                {...{
+                  user,
+                  setUser,
+                  allUsers,
+                  setAllUsers,
+                  summary,
+                  setSummary,
+                }}
+              />
+            }
           />
           <Route
             path="/signup"
