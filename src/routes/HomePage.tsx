@@ -1,10 +1,14 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FriendList } from "../components/FriendList";
 import LogIn from "../components/LogIn";
 import { PageHeader } from "../components/PageHeader";
 import { SmartSplitSummary } from "../components/SmartSplitSummary";
+import { IFriendSummary } from "../interfaces/IFriendSummary";
 import { ISummary } from "../interfaces/ISummary";
 import { IUser } from "../interfaces/IUser";
+import { calculateBalanceForAll } from "../utils/calculateBalanceforAll";
+import { getNonFriendList } from "../utils/getNonFriendList";
 
 export function HomePage(props: {
   user: IUser | undefined;
@@ -14,6 +18,34 @@ export function HomePage(props: {
   summary: ISummary | undefined;
   setSummary: React.Dispatch<React.SetStateAction<ISummary | undefined>>;
 }): JSX.Element {
+  const [friendSummary, setFriendSummary] = useState<IFriendSummary[]>([]);
+  const [nonFriendSummary, setNonFriendSummary] = useState<IFriendSummary[]>(
+    []
+  );
+  useEffect(() => {
+    if (props.summary !== undefined && props.user !== undefined) {
+      // Calculate balance for all friends
+      const friendSummary = calculateBalanceForAll(
+        props.user.id,
+        props.summary?.friends,
+        props.summary
+      );
+      setFriendSummary(friendSummary);
+      // Calculate balance for all non-friends
+      const nonFriends = getNonFriendList(
+        props.user.id,
+        props.summary.friends,
+        props.summary.moneyBorrowed,
+        props.summary.moneyLent
+      );
+      const nonFriendSummary = calculateBalanceForAll(
+        props.user.id,
+        nonFriends,
+        props.summary
+      );
+      setNonFriendSummary(nonFriendSummary);
+    }
+  }, [props.summary, props.user]);
   if (props.user === undefined) {
     // If no one is logged in
     return (
@@ -44,6 +76,8 @@ export function HomePage(props: {
           summary={props.summary}
           setSummary={props.setSummary}
           user={props.user}
+          friendSummary={friendSummary}
+          nonFriendSummary={nonFriendSummary}
         />
       </>
     );
