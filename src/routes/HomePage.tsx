@@ -22,6 +22,8 @@ export function HomePage(props: {
   const [nonFriendSummary, setNonFriendSummary] = useState<IFriendSummary[]>(
     []
   );
+  const [netOwing, setNetOwing] = useState<number>(0);
+  const [netIsOwed, setNetIsOwed] = useState<number>(0);
   useEffect(() => {
     if (props.summary !== undefined && props.user !== undefined) {
       // Calculate balance for all friends
@@ -46,6 +48,26 @@ export function HomePage(props: {
       setNonFriendSummary(nonFriendSummary);
     }
   }, [props.summary, props.user]);
+  useEffect(() => {
+    let netOwing = 0;
+    let netIsOwed = 0;
+    for (const friend of friendSummary) {
+      if (friend.balance !== undefined && friend.balance > 0) {
+        netOwing += friend.balance;
+      } else if (friend.balance !== undefined && friend.balance < 0) {
+        netIsOwed += friend.balance;
+      }
+    }
+    for (const friend of nonFriendSummary) {
+      if (friend.balance !== undefined && friend.balance > 0) {
+        netOwing += friend.balance;
+      } else if (friend.balance !== undefined && friend.balance < 0) {
+        netIsOwed += friend.balance;
+      }
+    }
+    setNetOwing(netOwing);
+    setNetIsOwed(netIsOwed);
+  }, [friendSummary, nonFriendSummary]);
   if (props.user === undefined) {
     // If no one is logged in
     return (
@@ -61,7 +83,8 @@ export function HomePage(props: {
     );
   } else {
     // If a user is logged in
-    console.log(props.summary);
+    console.log(friendSummary);
+    console.log(nonFriendSummary);
     return (
       <>
         <PageHeader user={props.user} setUser={props.setUser} />
@@ -71,7 +94,7 @@ export function HomePage(props: {
             Add expense
           </button>
         </Link>
-        <SmartSplitSummary summary={props.summary} user={props.user} />
+        <SmartSplitSummary netOwing={netOwing} netIsOwed={netIsOwed} />
         <FriendList
           summary={props.summary}
           setSummary={props.setSummary}
