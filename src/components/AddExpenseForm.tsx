@@ -15,7 +15,7 @@ export default function AddExpenseForm(props: {
   useEffect(() => {
     if (props.user !== undefined) {
       const numberOfPeople = props.selectedFriends.length + 1;
-      const costPerPerson = props.details.amount / numberOfPeople;
+      const costPerPerson = parseFloat(props.details.amount) / numberOfPeople;
       const transactions: ITransactionAdd[] = [];
       // create a transaction for the user
       transactions.push({
@@ -61,7 +61,7 @@ export default function AddExpenseForm(props: {
             onChange={(e) =>
               props.setDetails({
                 ...props.details,
-                amount: parseFloat(e.target.value),
+                amount: e.target.value,
               })
             }
           ></input>
