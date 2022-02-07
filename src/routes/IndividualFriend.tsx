@@ -8,9 +8,9 @@ import { IFriendSummary } from "../interfaces/IFriendSummary";
 import { ISummary } from "../interfaces/ISummary";
 import { ITransaction } from "../interfaces/ITransation";
 import { IUser } from "../interfaces/IUser";
-import { baseUrl } from "../utils/baseUrl";
-import { calculateBalanceForAll } from "../utils/calculateBalanceforAll";
-import { fetchData } from "../utils/fetchData";
+import { calculateFriendSummary } from "../utils/calculateFriendSummary";
+import { convertAmountToNumber } from "../utils/convertAmountToNumber";
+import { fetchFriendData } from "../utils/fetchFriendData";
 
 export function IndividualFriend(props: {
   user: IUser | undefined;
@@ -24,44 +24,19 @@ export function IndividualFriend(props: {
     []
   );
   useEffect(() => {
-    if (fakeId !== undefined) {
-      const realId = (parseInt(fakeId) - 13) / 199;
-      fetchData(
-        baseUrl + `/friends/${props.user?.id}/${realId}`,
-        setFriendInfo
-      );
-    }
+    fetchFriendData(fakeId, props.user?.id, setFriendInfo);
   }, [fakeId, props.user?.id]);
   useEffect(() => {
-    if (friendInfo !== undefined) {
-      const transactions = [];
-      for (const item of friendInfo.moneyBorrowed) {
-        const newItem = { ...item, amount: parseFloat(item.balance) };
-        transactions.push(newItem);
-      }
-      for (const item of friendInfo.moneyLent) {
-        const newItem = { ...item, amount: -parseFloat(item.balance) };
-        transactions.push(newItem);
-      }
-      setAllTransations(transactions);
-    }
+    convertAmountToNumber(friendInfo, setAllTransations);
   }, [friendInfo]);
   useEffect(() => {
-    if (
-      props.user !== undefined &&
-      friendInfo !== undefined &&
-      props.summary !== undefined
-    ) {
-      const friendSummary = calculateBalanceForAll(
-        props.user.id,
-        friendInfo.info,
-        props.summary
-      );
-      console.log(friendSummary);
-      setThisFriendSummary(friendSummary);
-    }
+    calculateFriendSummary(
+      props.user,
+      friendInfo,
+      props.summary,
+      setThisFriendSummary
+    );
   }, [props.summary, friendInfo, props.user]);
-  console.log(thisFriendSummary);
 
   if (props.user === undefined) {
     return <h2>Please log in.</h2>;
@@ -76,7 +51,7 @@ export function IndividualFriend(props: {
           <h2>You have no expenses with {friendInfo.info[0].name}.</h2>
         ) : thisFriendSummary[0].balance !== undefined &&
           thisFriendSummary[0].balance === 0 ? (
-          // if the balance is zero
+          // if the thisFriendSummary[0].balance is zero
           <h2>You are all settled up with {friendInfo.info[0].name}.</h2>
         ) : (
           // if the balance is non-zero
@@ -106,12 +81,20 @@ export function IndividualFriend(props: {
                     data-toggle="modal"
                     data-target="#settleUpModal"
                   >
-                    Settle
+                    Settle up
                   </button>
                   <SettleUpModal
+                    {...{
+                      friendInfo,
+                      setFriendInfo,
+                      setAllTransations,
+                      setThisFriendSummary,
+                    }}
                     user={props.user}
                     friend={friendInfo.info[0]}
                     balance={thisFriendSummary[0].balance}
+                    fakeId={fakeId}
+                    summary={props.summary}
                   />
                 </>
               )}
