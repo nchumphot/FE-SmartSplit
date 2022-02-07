@@ -102,7 +102,7 @@ export function IndividualFriend(props: {
             {allTransactions
               .filter((item) => item.description !== "isSettleUp=true")
               .map((item) => (
-                <TransactionCard transaction={item} />
+                <TransactionCard transaction={item} key={item.id} />
               ))}
           </>
         )}

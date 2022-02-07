@@ -69,6 +69,7 @@ export function FriendList(props: {
               .filter((friend) => friendFilter(selectedOption, friend))
               .map((friend) => (
                 <FriendCard
+                  key={friend.id}
                   friend={friend}
                   isFriend={false}
                   user={props.user}
