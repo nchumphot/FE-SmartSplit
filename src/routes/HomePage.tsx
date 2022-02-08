@@ -83,8 +83,6 @@ export function HomePage(props: {
     );
   } else {
     // If a user is logged in
-    console.log(friendSummary);
-    console.log(nonFriendSummary);
     return (
       <>
         <PageHeader user={props.user} setUser={props.setUser} />
