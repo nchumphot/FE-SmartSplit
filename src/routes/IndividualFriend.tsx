@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { PageHeader } from "../components/PageHeader";
 import { SettleUpModal } from "../components/SettleUpModal";
 import { TransactionCard } from "../components/TransactionCard";
@@ -18,8 +18,12 @@ export function IndividualFriend(props: {
   summary: ISummary | undefined;
 }): JSX.Element {
   const fakeId = useParams().id;
+  let navigate = useNavigate();
+  // friendInfo contains {info: IUser[], moneyBorrowed, moneyLent}
   const [friendInfo, setFriendInfo] = useState<IFriend | undefined>();
+  // allTransactions contains each transaction with amount as numbers (-ve for owing, +ve for is owed)
   const [allTransactions, setAllTransations] = useState<ITransaction[]>([]);
+  // thisFriendSummary sums up all the transactions with this friend
   const [thisFriendSummary, setThisFriendSummary] = useState<IFriendSummary[]>(
     []
   );
@@ -37,6 +41,11 @@ export function IndividualFriend(props: {
       setThisFriendSummary
     );
   }, [props.summary, friendInfo, props.user]);
+  useEffect(() => {
+    if (props.user === undefined) {
+      navigate("/");
+    }
+  }, [props.user, navigate]);
 
   if (props.user === undefined) {
     return <h2>Please log in.</h2>;
