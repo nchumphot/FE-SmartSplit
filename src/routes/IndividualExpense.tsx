@@ -9,6 +9,7 @@ import { IUser } from "../interfaces/IUser";
 import { baseUrl } from "../utils/baseUrl";
 import { dateTimeFormatter } from "../utils/dateTimeFormatter";
 import { fetchData } from "../utils/fetchData";
+import { handleAddComment } from "../utils/handleAddComment";
 
 export function IndividualExpense(props: {
   user: IUser | undefined;
@@ -18,6 +19,7 @@ export function IndividualExpense(props: {
     { expense: IExpense[]; transactions: ITransactionShort[] } | undefined
   >();
   const [comments, setComments] = useState<IComment[] | undefined>();
+  const [newComment, setNewComment] = useState<string>("");
   const { id } = useParams();
   useEffect(() => {
     fetchData(baseUrl + `/expenses/${id}`, setExpenseDetails);
@@ -66,6 +68,7 @@ export function IndividualExpense(props: {
               <li>{`${item.borrower_name} owe £${item.balance}`}</li>
             ))}
           </ul>
+          {/* Comment section */}
           <h4>Comments</h4>
           {comments === undefined ? (
             <p>Loading comments...</p>
@@ -74,10 +77,32 @@ export function IndividualExpense(props: {
           ) : (
             <>
               {comments.map((c) => (
-                <CommentCard comment={c} />
+                <CommentCard key={c.id} comment={c} />
               ))}
             </>
           )}
+          {/* Add a comment section */}
+          <input
+            type="text"
+            placeholder="Type your comment here"
+            value={newComment}
+            onChange={(e) => setNewComment(e.target.value)}
+          />
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={() => {
+              id !== undefined &&
+                handleAddComment(
+                  props.user?.id,
+                  parseInt(id),
+                  newComment,
+                  setComments
+                );
+            }}
+          >
+            Add comment
+          </button>
         </div>
       );
     } else {
