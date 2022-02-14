@@ -13,9 +13,14 @@ export function CommentCard(props: {
         {props.comment.name}, {dateTimeFormatter(props.comment.creation_date)}
       </p>
       {props.user?.id === props.comment.user_id && (
-        <button type="button" className="btn btn-warning">
-          Edit
-        </button>
+        <>
+          <button type="button" className="btn btn-warning">
+            Edit
+          </button>
+          <button type="button" className="btn btn-danger">
+            Delete
+          </button>
+        </>
       )}
     </div>
   );
