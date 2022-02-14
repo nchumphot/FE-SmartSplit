@@ -99,6 +99,7 @@ export function IndividualExpense(props: {
                   newComment,
                   setComments
                 );
+              setNewComment("");
             }}
           >
             Add comment
