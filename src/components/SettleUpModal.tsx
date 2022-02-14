@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { IExpenseForm } from "../interfaces/IExpenseForm";
 import { IFriend } from "../interfaces/IFriend";
 import { IFriendSummary } from "../interfaces/IFriendSummary";
