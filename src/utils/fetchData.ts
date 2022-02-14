@@ -4,6 +4,7 @@ import { IFriend } from "../interfaces/IFriend";
 import { IGetUser } from "../interfaces/IGetUser";
 import { IExpense } from "../interfaces/IExpense";
 import { ITransactionShort } from "../interfaces/ITransactionShort";
+import { IComment } from "../interfaces/IComment";
 
 export function fetchData(
   url: string,
@@ -21,6 +22,7 @@ export function fetchData(
           | undefined
         >
       >
+    | React.Dispatch<React.SetStateAction<IComment[] | undefined>>
 ): void {
   fetch(url)
     .then((res) => res.json())

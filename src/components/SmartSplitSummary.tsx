@@ -9,6 +9,9 @@ export function SmartSplitSummary(props: {
       {props.netIsOwed !== 0 && (
         <p>You are owed £{(-props.netIsOwed).toFixed(2)}.</p>
       )}
+      {props.netOwing === 0 && props.netIsOwed === 0 && (
+        <p>You are all settled up.</p>
+      )}
     </>
   );
 }
