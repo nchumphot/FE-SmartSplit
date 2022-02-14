@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { CommentCard } from "../components/CommentCard";
 import { PageHeader } from "../components/PageHeader";
+import { IComment } from "../interfaces/IComment";
 import { IExpense } from "../interfaces/IExpense";
 import { ITransactionShort } from "../interfaces/ITransactionShort";
 import { IUser } from "../interfaces/IUser";
@@ -15,12 +17,12 @@ export function IndividualExpense(props: {
   const [expenseDetails, setExpenseDetails] = useState<
     { expense: IExpense[]; transactions: ITransactionShort[] } | undefined
   >();
-  // const [comments, setComments] = useState();
+  const [comments, setComments] = useState<IComment[] | undefined>();
   const { id } = useParams();
   useEffect(() => {
     fetchData(baseUrl + `/expenses/${id}`, setExpenseDetails);
+    fetchData(baseUrl + `/comments/${id}`, setComments);
   }, [id]);
-  console.log(expenseDetails);
   if (expenseDetails === undefined) {
     return (
       <div>
@@ -64,6 +66,18 @@ export function IndividualExpense(props: {
               <li>{`${item.borrower_name} owe £${item.balance}`}</li>
             ))}
           </ul>
+          <h4>Comments</h4>
+          {comments === undefined ? (
+            <p>Loading comments...</p>
+          ) : comments.length === 0 ? (
+            <p>There are no comments yet. Be the first to add one.</p>
+          ) : (
+            <>
+              {comments.map((c) => (
+                <CommentCard comment={c} />
+              ))}
+            </>
+          )}
         </div>
       );
     } else {
