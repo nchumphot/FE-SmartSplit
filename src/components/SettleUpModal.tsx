@@ -1,14 +1,26 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { IExpenseForm } from "../interfaces/IExpenseForm";
+import { IFriend } from "../interfaces/IFriend";
+import { IFriendSummary } from "../interfaces/IFriendSummary";
+import { ISummary } from "../interfaces/ISummary";
 import { ITransactionAdd } from "../interfaces/ITransactionAdd";
+import { ITransaction } from "../interfaces/ITransation";
 import { IUser } from "../interfaces/IUser";
+import { calculateFriendSummary } from "../utils/calculateFriendSummary";
+import { convertAmountToNumber } from "../utils/convertAmountToNumber";
+import { fetchFriendData } from "../utils/fetchFriendData";
 import { handleAddExpense } from "../utils/handleAddExpense";
 
 export function SettleUpModal(props: {
   user: IUser;
   friend: IUser;
   balance: number;
+  fakeId: string | undefined;
+  summary: ISummary | undefined;
+  friendInfo: IFriend | undefined;
+  setFriendInfo: React.Dispatch<React.SetStateAction<IFriend | undefined>>;
+  setAllTransations: React.Dispatch<React.SetStateAction<ITransaction[]>>;
+  setThisFriendSummary: React.Dispatch<React.SetStateAction<IFriendSummary[]>>;
 }): JSX.Element {
   const today = new Date().toISOString().slice(0, 10);
   const positiveBalance = props.balance < 0 ? -props.balance : props.balance;
@@ -16,7 +28,7 @@ export function SettleUpModal(props: {
   const receiverId = props.balance > 0 ? props.friend.id : props.user.id;
   const initialDetail = {
     description: "isSettleUp=true",
-    amount: positiveBalance,
+    amount: positiveBalance.toString(),
     lenderId: paidbyId,
     option: "N/A",
     date: today,
@@ -61,7 +73,7 @@ export function SettleUpModal(props: {
                   onChange={(e) =>
                     setDetails({
                       ...details,
-                      amount: parseFloat(e.target.value),
+                      amount: e.target.value,
                     })
                   }
                 ></input>
@@ -78,19 +90,36 @@ export function SettleUpModal(props: {
               Not now
             </button>
             {props.user !== undefined && (
-              <Link to={`/friends/${props.friend.id * 199 + 13}`}>
-                <button
-                  type="button"
-                  className="btn btn-success"
-                  data-dismiss="modal"
-                  onClick={() => {
-                    handleAddExpense(props.user.id, details, transactions);
-                    setDetails(initialDetail);
-                  }}
-                >
-                  Settle up
-                </button>
-              </Link>
+              <button
+                type="button"
+                className="btn btn-success"
+                data-dismiss="modal"
+                onClick={() => {
+                  handleAddExpense(props.user.id, details, transactions).then(
+                    () => {
+                      console.log("settling up");
+                      fetchFriendData(
+                        props.fakeId,
+                        props.user?.id,
+                        props.setFriendInfo
+                      );
+                      convertAmountToNumber(
+                        props.friendInfo,
+                        props.setAllTransations
+                      );
+                      calculateFriendSummary(
+                        props.user,
+                        props.friendInfo,
+                        props.summary,
+                        props.setThisFriendSummary
+                      );
+                      setDetails(initialDetail);
+                    }
+                  );
+                }}
+              >
+                Settle up
+              </button>
             )}
           </div>
         </div>

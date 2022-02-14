@@ -14,6 +14,7 @@ export interface IMoneyLent {
 
 export interface ISummary {
   friends: IUser[];
+  info: IUser;
   moneyBorrowed: IMoneyBorrowed[];
   moneyLent: IMoneyLent[];
 }

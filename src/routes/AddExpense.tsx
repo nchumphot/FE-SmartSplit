@@ -18,7 +18,7 @@ export function AddExpense(props: {
   const today = new Date().toISOString().slice(0, 10);
   const [details, setDetails] = useState<IExpenseForm>({
     description: "",
-    amount: 0,
+    amount: "0",
     lenderId: 0,
     option: "Split equally",
     date: today,

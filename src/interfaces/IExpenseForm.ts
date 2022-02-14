@@ -1,6 +1,6 @@
 export interface IExpenseForm {
   description: string;
-  amount: number;
+  amount: string;
   lenderId: number;
   option: string;
   date: string;

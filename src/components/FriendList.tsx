@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IFriendSummary } from "../interfaces/IFriendSummary";
 import { ISummary } from "../interfaces/ISummary";
 import { IUser } from "../interfaces/IUser";
-import { calculateBalanceForAll } from "../utils/calculateBalanceforAll";
 import { friendFilter } from "../utils/friendFilter";
-import { getNonFriendList } from "../utils/getNonFriendList";
 import { AddFriendModal } from "./AddFriendModal";
 import { FriendCard } from "./FriendCard";
 
@@ -12,6 +10,8 @@ export function FriendList(props: {
   summary: ISummary | undefined;
   setSummary: React.Dispatch<React.SetStateAction<ISummary | undefined>>;
   user: IUser;
+  friendSummary: IFriendSummary[];
+  nonFriendSummary: IFriendSummary[];
 }): JSX.Element {
   const filterOptions = [
     "All",
@@ -20,35 +20,6 @@ export function FriendList(props: {
     "People who owe you",
   ];
   const [selectedOption, setSelectionOption] = useState<string>("All");
-  const [friendSummary, setFriendSummary] = useState<IFriendSummary[]>([]);
-  const [nonFriendSummary, setNonFriendSummary] = useState<IFriendSummary[]>(
-    []
-  );
-  useEffect(() => {
-    if (props.summary !== undefined) {
-      // Calculate balance for all friends
-      const friendSummary = calculateBalanceForAll(
-        props.user.id,
-        props.summary?.friends,
-        props.summary
-      );
-      setFriendSummary(friendSummary);
-      // Calculate balance for all non-friends
-      const nonFriends = getNonFriendList(
-        props.user.id,
-        props.summary.friends,
-        props.summary.moneyBorrowed,
-        props.summary.moneyLent
-      );
-      const nonFriendSummary = calculateBalanceForAll(
-        props.user.id,
-        nonFriends,
-        props.summary
-      );
-      setNonFriendSummary(nonFriendSummary);
-    }
-  }, [props.summary, props.user.id]);
-
   if (props.summary === undefined) {
     return <h3>Loading your friend list...</h3>;
   } else {
@@ -78,7 +49,7 @@ export function FriendList(props: {
           ))}
         </select>
         {/* List of friends */}
-        {friendSummary
+        {props.friendSummary
           .filter((friend) => friendFilter(selectedOption, friend))
           .map((friend) => (
             <FriendCard
@@ -89,15 +60,16 @@ export function FriendList(props: {
               setSummary={props.setSummary}
             />
           ))}
-        {nonFriendSummary.filter((friend) =>
+        {props.nonFriendSummary.filter((friend) =>
           friendFilter(selectedOption, friend)
         ).length !== 0 && (
           <>
             <h3>Not in your friend list</h3>
-            {nonFriendSummary
+            {props.nonFriendSummary
               .filter((friend) => friendFilter(selectedOption, friend))
               .map((friend) => (
                 <FriendCard
+                  key={friend.id}
                   friend={friend}
                   isFriend={false}
                   user={props.user}
