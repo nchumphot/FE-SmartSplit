@@ -77,7 +77,7 @@ export function IndividualExpense(props: {
           ) : (
             <>
               {comments.map((c) => (
-                <CommentCard key={c.id} comment={c} />
+                <CommentCard key={c.id} comment={c} user={props.user} />
               ))}
             </>
           )}
