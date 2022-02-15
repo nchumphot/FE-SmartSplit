@@ -10,7 +10,9 @@ export function CommentCard(props: {
     <div>
       <h5>{props.comment.comment}</h5>
       <p>
-        {props.comment.name}, {dateTimeFormatter(props.comment.creation_date)}
+        {props.comment.name}, {dateTimeFormatter(props.comment.creation_date)}{" "}
+        {props.comment.creation_date !== props.comment.modified_date &&
+          `(edited on ${props.comment.modified_date})`}
       </p>
       {props.user?.id === props.comment.user_id && (
         <>
