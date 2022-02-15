@@ -19,7 +19,7 @@ export function FriendCard(props: {
   } else {
     return (
       <div
-        className={`container m-2 p-2 border ${
+        className={`container-lg m-2 p-2 ${
           props.isFriend ? "border border-success" : "border border-warning"
         }`}
         key={props.friend.id}
@@ -46,17 +46,15 @@ export function FriendCard(props: {
             )}
           </div>
           <div className="col">
-            {props.friend.balance < 0 && (
+            {props.friend.balance < 0 ? (
               <p>
                 You are owed <br />£{(props.friend.balance * -1).toFixed(2)}
               </p>
-            )}
-            {props.friend.balance > 0 && (
+            ) : props.friend.balance > 0 ? (
               <p>
                 You owe <br />£{props.friend.balance.toFixed(2)}
               </p>
-            )}
-            {props.friend.balance === 0 && (
+            ) : (
               <p>
                 You are <br />
                 settled up
