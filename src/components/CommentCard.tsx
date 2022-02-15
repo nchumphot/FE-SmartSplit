@@ -1,6 +1,7 @@
 import { IComment } from "../interfaces/IComment";
 import { IUser } from "../interfaces/IUser";
 import { dateTimeFormatter } from "../utils/dateTimeFormatter";
+import { DeleteCommentModal } from "./DeleteCommentModal";
 import { EditCommentModal } from "./EditCommentModal";
 
 export function CommentCard(props: {
@@ -30,9 +31,18 @@ export function CommentCard(props: {
             comment={props.comment}
             setComments={props.setComments}
           />
-          <button type="button" className="btn btn-danger">
+          <button
+            type="button"
+            className="btn btn-danger"
+            data-toggle="modal"
+            data-target={`#deleteCommentModal-${props.comment.id}`}
+          >
             Delete
           </button>
+          <DeleteCommentModal
+            comment={props.comment}
+            setComments={props.setComments}
+          />
         </>
       )}
     </div>
