@@ -41,14 +41,16 @@ export function AddExpense(props: {
   return (
     <div>
       <PageHeader user={props.user} setUser={props.setUser} />
-      <h2>Add an expense</h2>
-      <FriendDropDown
-        {...{ allFriends, selectedFriends, setSelectedFriends }}
-      />
-      <AddExpenseForm
-        {...{ details, setDetails, selectedFriends }}
-        user={props.user}
-      />
+      <div className="mx-4 my-3">
+        <h2>Add an expense</h2>
+        <FriendDropDown
+          {...{ allFriends, selectedFriends, setSelectedFriends }}
+        />
+        <AddExpenseForm
+          {...{ details, setDetails, selectedFriends }}
+          user={props.user}
+        />
+      </div>
     </div>
   );
 }

@@ -73,12 +73,14 @@ export function HomePage(props: {
     return (
       <>
         <PageHeader user={props.user} setUser={props.setUser} />
-        <h2>Welcome to SmartSplit!</h2>
-        <LogIn
-          allUsers={props.allUsers}
-          setAllUsers={props.setAllUsers}
-          setUser={props.setUser}
-        />
+        <div className="mx-4 my-3">
+          <h2>Welcome to SmartSplit!</h2>
+          <LogIn
+            allUsers={props.allUsers}
+            setAllUsers={props.setAllUsers}
+            setUser={props.setUser}
+          />
+        </div>
       </>
     );
   } else {
