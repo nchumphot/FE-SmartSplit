@@ -19,7 +19,7 @@ export function FriendCard(props: {
   } else {
     return (
       <div
-        className={`container-lg m-2 p-2 ${
+        className={`container-lg my-2 p-2 ${
           props.isFriend ? "border border-success" : "border border-warning"
         }`}
         key={props.friend.id}

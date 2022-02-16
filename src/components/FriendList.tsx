@@ -26,28 +26,36 @@ export function FriendList(props: {
     return (
       <div>
         <h3>Friends</h3>
-        <button
-          type="button"
-          className="btn btn-success"
-          data-toggle="modal"
-          data-target="#addFriendModal"
-        >
-          Add friends
-        </button>
-        <AddFriendModal user={props.user} />
-        {/* Filter dropdown */}
-        <label htmlFor="filter-dropdown">Filter:</label>
-        <select
-          name="filter-dropdown"
-          value={selectedOption}
-          onChange={(e) => setSelectionOption(e.target.value)}
-        >
-          {filterOptions.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
-          ))}
-        </select>
+        <div className="container-lg">
+          <div className="row">
+            <div className="col">
+              <button
+                type="button"
+                className="btn btn-success"
+                data-toggle="modal"
+                data-target="#addFriendModal"
+              >
+                Add friends
+              </button>
+              <AddFriendModal user={props.user} />
+            </div>
+            <div className="col-3 my-auto">
+              {/* Filter dropdown */}
+              <label htmlFor="filter-dropdown">Filter:</label>
+              <select
+                name="filter-dropdown"
+                value={selectedOption}
+                onChange={(e) => setSelectionOption(e.target.value)}
+              >
+                {filterOptions.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+        </div>
         {/* List of friends */}
         {props.friendSummary
           .filter((friend) => friendFilter(selectedOption, friend))
