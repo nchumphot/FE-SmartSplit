@@ -25,7 +25,7 @@ export function FriendCard(props: {
         key={props.friend.id}
       >
         <div className="row">
-          <div className="col-10">
+          <div className="col-10 my-auto">
             <Link to={`/friends/${props.friend.id * 199 + 13}`}>
               <h4>{props.friend.name}</h4>
             </Link>
