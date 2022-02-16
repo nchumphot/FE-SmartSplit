@@ -21,7 +21,7 @@ export function CommentCard(props: {
         <>
           <button
             type="button"
-            className="btn btn-warning btn-sm mr-1"
+            className="btn btn-warning btn-sm ml-1"
             data-toggle="modal"
             data-target={`#editCommentModal-${props.comment.id}`}
           >
@@ -33,7 +33,7 @@ export function CommentCard(props: {
           />
           <button
             type="button"
-            className="btn btn-danger btn-sm mr-1"
+            className="btn btn-danger btn-sm ml-1"
             data-toggle="modal"
             data-target={`#deleteCommentModal-${props.comment.id}`}
           >
