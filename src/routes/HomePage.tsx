@@ -73,12 +73,14 @@ export function HomePage(props: {
     return (
       <>
         <PageHeader user={props.user} setUser={props.setUser} />
-        <h2>Welcome to SmartSplit!</h2>
-        <LogIn
-          allUsers={props.allUsers}
-          setAllUsers={props.setAllUsers}
-          setUser={props.setUser}
-        />
+        <div className="mx-4 my-3">
+          <h2>Welcome to SmartSplit!</h2>
+          <LogIn
+            allUsers={props.allUsers}
+            setAllUsers={props.setAllUsers}
+            setUser={props.setUser}
+          />
+        </div>
       </>
     );
   } else {
@@ -86,20 +88,22 @@ export function HomePage(props: {
     return (
       <>
         <PageHeader user={props.user} setUser={props.setUser} />
-        <h2>Welcome back, {props.user.name}!</h2>
-        <Link to="/expenses/add">
-          <button type="button" className="btn btn-success">
-            Add expense
-          </button>
-        </Link>
-        <SmartSplitSummary netOwing={netOwing} netIsOwed={netIsOwed} />
-        <FriendList
-          summary={props.summary}
-          setSummary={props.setSummary}
-          user={props.user}
-          friendSummary={friendSummary}
-          nonFriendSummary={nonFriendSummary}
-        />
+        <div className="mx-4 my-3">
+          <h2>Welcome back, {props.user.name}!</h2>
+          <Link to="/expenses/add">
+            <button type="button" className="btn btn-success">
+              Add expense
+            </button>
+          </Link>
+          <SmartSplitSummary netOwing={netOwing} netIsOwed={netIsOwed} />
+          <FriendList
+            summary={props.summary}
+            setSummary={props.setSummary}
+            user={props.user}
+            friendSummary={friendSummary}
+            nonFriendSummary={nonFriendSummary}
+          />
+        </div>
       </>
     );
   }

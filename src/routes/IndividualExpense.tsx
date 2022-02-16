@@ -54,20 +54,25 @@ export function IndividualExpense(props: {
       return (
         <div>
           <PageHeader user={props.user} setUser={props.setUser} />
-          <h4>{description}</h4>
-          <h2>{`£${totalBalance}`}</h2>
-          <p>
-            {`Added by ${creatorName} on
+          <div className="m-2">
+            <h4>{description}</h4>
+            <h2>{`£${totalBalance}`}</h2>
+            <p>
+              {`Added by ${creatorName} on
           ${dateTimeFormatter(creationDate)}`}
-          </p>
-          {notes && <p>{`Notes: ${notes}`}</p>}
-          <h5>{`${lenderName} paid £${totalBalance}`}</h5>
-          <ul>
-            {youOwe && <li>{`You owe £${youOweTransaction.balance}`}</li>}
-            {otherTransactions.map((item) => (
-              <li>{`${item.borrower_name} owe £${item.balance}`}</li>
-            ))}
-          </ul>
+            </p>
+            {notes && <small>{`Notes: ${notes}`}</small>}
+            <div className="border border-success p-2">
+              <h5>{`${lenderName} paid £${totalBalance}`}</h5>
+              <ul>
+                {youOwe && <li>{`You owe £${youOweTransaction.balance}`}</li>}
+                {otherTransactions.map((item) => (
+                  <li>{`${item.borrower_name} owe £${item.balance}`}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
           {/* Comment section */}
           <h4>Comments</h4>
           {comments === undefined ? (
