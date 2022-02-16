@@ -11,6 +11,7 @@ export function FriendDropDown(props: {
     <div>
       <label htmlFor="friends">Split this with:</label>
       <select
+        className="ml-2"
         name="friends"
         value={""}
         onChange={(e) => {
@@ -34,12 +35,10 @@ export function FriendDropDown(props: {
             </option>
           ))}
       </select>
-      {/* {props.selectedFriends.length === 0 ? (
-        <p>Please select friend(s) to split this expense with.</p>
-      ) : (
-        <> */}
+      <br />
       {props.selectedFriends.map((friend) => (
         <button
+          className="btn btn-info btn-sm mr-1"
           key={friend.id}
           onClick={() =>
             props.setSelectedFriends(
@@ -50,8 +49,6 @@ export function FriendDropDown(props: {
           {friend.name}
         </button>
       ))}
-      {/* </>
-      )} */}
     </div>
   );
 }
