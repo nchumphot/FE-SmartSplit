@@ -57,11 +57,15 @@ export function IndividualFriend(props: {
         <PageHeader user={props.user} setUser={props.setUser} />
         {allTransactions.length === 0 ? (
           // if there are no transactions between these people
-          <h2>You have no expenses with {friendInfo.info[0].name}.</h2>
+          <h2 className="mx-4 my-3">
+            You have no expenses with {friendInfo.info[0].name}.
+          </h2>
         ) : thisFriendSummary[0].balance !== undefined &&
           thisFriendSummary[0].balance === 0 ? (
           // if the thisFriendSummary[0].balance is zero
-          <h2>You are all settled up with {friendInfo.info[0].name}.</h2>
+          <h2 className="mx-4 my-3">
+            You are all settled up with {friendInfo.info[0].name}.
+          </h2>
         ) : (
           // if the balance is non-zero
           <>
