@@ -10,18 +10,18 @@ export function CommentCard(props: {
   user: IUser | undefined;
 }) {
   return (
-    <div>
+    <div className="border border-primary m-2 p-2">
       <h5>{props.comment.comment}</h5>
-      <p>
+      <small className="my-1">
         {props.comment.name}, {dateTimeFormatter(props.comment.creation_date)}{" "}
         {props.comment.creation_date !== props.comment.modified_date &&
           `(edited on ${dateTimeFormatter(props.comment.modified_date)})`}
-      </p>
+      </small>
       {props.user?.id === props.comment.user_id && (
         <>
           <button
             type="button"
-            className="btn btn-warning"
+            className="btn btn-warning btn-sm mr-1"
             data-toggle="modal"
             data-target={`#editCommentModal-${props.comment.id}`}
           >
@@ -33,7 +33,7 @@ export function CommentCard(props: {
           />
           <button
             type="button"
-            className="btn btn-danger"
+            className="btn btn-danger btn-sm mr-1"
             data-toggle="modal"
             data-target={`#deleteCommentModal-${props.comment.id}`}
           >
