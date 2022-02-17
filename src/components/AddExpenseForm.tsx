@@ -4,6 +4,7 @@ import { IExpenseForm } from "../interfaces/IExpenseForm";
 import { ITransactionAdd } from "../interfaces/ITransactionAdd";
 import { IUser } from "../interfaces/IUser";
 import { handleAddExpense } from "../utils/handleAddExpense";
+import { SplitByAmount } from "./SplitByAmount";
 
 export default function AddExpenseForm(props: {
   user: IUser | undefined;
@@ -12,28 +13,51 @@ export default function AddExpenseForm(props: {
   setDetails: React.Dispatch<React.SetStateAction<IExpenseForm>>;
 }): JSX.Element {
   const [transactions, setTransactions] = useState<ITransactionAdd[]>([]);
+  const options = ["Split equally", "Split by amount", "Split by percentage"];
+  const [splitOption, setSplitOption] = useState<string>(options[0]);
   useEffect(() => {
     if (props.user !== undefined) {
-      const numberOfPeople = props.selectedFriends.length + 1;
-      const costPerPerson = parseFloat(props.details.amount) / numberOfPeople;
-      const transactions: ITransactionAdd[] = [];
-      // create a transaction for the user
-      transactions.push({
-        lenderId: props.details.lenderId,
-        borrowerId: props.user.id,
-        balance: costPerPerson,
-      });
-      // create a transaction for each user
-      for (const friend of props.selectedFriends) {
+      if (splitOption === "Split equally") {
+        const numberOfPeople = props.selectedFriends.length + 1;
+        const costPerPerson = parseFloat(props.details.amount) / numberOfPeople;
+        const transactions: ITransactionAdd[] = [];
+        // create a transaction for the user
         transactions.push({
           lenderId: props.details.lenderId,
-          borrowerId: friend.id,
+          borrowerId: props.user.id,
           balance: costPerPerson,
         });
+        // create a transaction for each user
+        for (const friend of props.selectedFriends) {
+          transactions.push({
+            lenderId: props.details.lenderId,
+            borrowerId: friend.id,
+            balance: costPerPerson,
+          });
+        }
+        setTransactions(transactions);
+      } else {
+        const transactions: ITransactionAdd[] = [];
+        // create a transaction for the user
+        transactions.push({
+          lenderId: props.details.lenderId,
+          borrowerId: props.user.id,
+          balance: 0,
+        });
+        // create a transaction for each user
+        for (const friend of props.selectedFriends) {
+          transactions.push({
+            lenderId: props.details.lenderId,
+            borrowerId: friend.id,
+            balance: 0,
+          });
+        }
+        setTransactions(transactions);
       }
-      setTransactions(transactions);
     }
-  }, [props.details, props.user, props.selectedFriends]);
+  }, [props.details, props.user, props.selectedFriends, splitOption]);
+  console.log(splitOption);
+  console.log(transactions);
   if (props.user !== undefined) {
     return (
       <form className="p-12">
@@ -88,11 +112,40 @@ export default function AddExpenseForm(props: {
           </select>
         </div>
         <div className="form-group">
-          <label htmlFor="option">Split option</label>
-          <select name="option">
-            <option>Split equally</option>
+          <label htmlFor="split-option">Split option:</label>
+          <select
+            className="form-control"
+            name="split-option"
+            value={splitOption}
+            onChange={(e) => {
+              setSplitOption(e.target.value);
+            }}
+          >
+            {options.map((item, idx) => (
+              <option key={idx} value={item}>
+                {item}
+              </option>
+            ))}
           </select>
         </div>
+        <div id="split-option">
+          {/* Split equally */}
+          {splitOption === "Split equally" && transactions.length !== 0 && (
+            <p className="text-danger">
+              Each person owes £{transactions[0].balance}
+            </p>
+          )}
+          {/* Split by amount */}
+          {splitOption === "Split by amount" && transactions.length !== 0 && (
+            <SplitByAmount
+              details={props.details}
+              user={props.user}
+              selectedFriends={props.selectedFriends}
+              setTransactions={setTransactions}
+            />
+          )}
+        </div>
+
         <div className="form-group">
           <label htmlFor="date">Date</label>
           <input
